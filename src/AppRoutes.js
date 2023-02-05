@@ -3,6 +3,7 @@ import {  Route,Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Signin from './pages/auth/Signin'
 import Signup from './pages/auth/Signup'
+import Activate from './pages/auth/Activate'
 
 const AppRoutes = () => {
   return (
@@ -11,6 +12,8 @@ const AppRoutes = () => {
             <Route path='/' element={<Home/>}/>
             <Route path='/signup' element={<Signup/>}/>
             <Route path='/signin' element={<Signin/>}/>
+            <Route path='/auth/activate/:token' element={<Activate/>}/>
+
         </Routes>
     </div>
   )
