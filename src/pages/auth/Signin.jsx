@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
+import Layout from "../layouts/Layout";
+import { authenticate, isAuth } from "./helpers";
 
 const Signin = () => {
   const [values, setValues] = useState({
@@ -22,8 +25,10 @@ const Signin = () => {
     axios.post(`${process.env.REACT_APP_API}/signin`,{ email, password})
     .then(function (response) {
       console.log('success', response);
-      setValues({...values, email: '', password: '', buttonText:'Submit'});
-      toast.success(response.data.message);
+      authenticate(response, ()=>{
+        setValues({...values, email: '', password: '', buttonText:'Submit'});
+        toast.success(`${response.data.user.name}, Welcome Back!`);
+      });
 
     })
     .catch(function (error) {
@@ -33,10 +38,11 @@ const Signin = () => {
         toast.error(error.response.data.error);
     });
   }
-  console.log(values);
+  // console.log(values);
   return (
-    <React.Fragment>
+    <Layout>
       <div className="container">
+        {isAuth() ? <Navigate to="/" replace /> : null}
         <ToastContainer />
         <div className="row" style={{'display':'flex', 'justifyContent': 'center'}}>
           <div className="col-md-4">
@@ -61,7 +67,7 @@ const Signin = () => {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </Layout>
   );
 };
 

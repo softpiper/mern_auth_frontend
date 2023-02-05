@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
+import Layout from "../layouts/Layout";
 
 const Activate = ({match}) => {
   const [token,setToken] = useState('');
   const [show, setShow] = useState(true);
+  const [buttonText, setButtonText] = useState('Activate');
+
 
   let tok = useParams().token;
   
@@ -16,24 +19,27 @@ const Activate = ({match}) => {
   // console.log(token);
   const submitHandler = (e)=>{
     e.preventDefault();
-    // setValues({...values, buttonText: "Submitting"})
+    setButtonText('Wait...');
     axios.post(`${process.env.REACT_APP_API}/account-activation`,{token})
     .then(function (response) {
       console.log('success', response);
-      // setValues({...values, name: '' });
+      setButtonText('Activated');
+      setShow(false);
+
       toast.success(response.data.message);
 
     })
     .catch(function (error) {
       console.log('error', error.response.data);
-      // setValues({...values, buttonText:'Submit'});
+      setButtonText('Activate');
+
 
         toast.error(error.response.data.error);
     });
   }
   // console.log(values);
   return (
-    <React.Fragment>
+    <Layout>
       <div className="container">
         <ToastContainer />
         <div className="row" style={{'display':'flex', 'justifyContent': 'center'}}>
@@ -41,13 +47,17 @@ const Activate = ({match}) => {
         <h3>Activate Account</h3>
         <div>
           <h4 >Hey Ready to activate your account </h4>
-          <button className="btn btn-sm btn-warning" onClick={submitHandler}>Activate</button>
+          <button className="btn btn-sm btn-warning" disabled={!show} onClick={submitHandler}>{buttonText}</button>
+         {!show &&  <Link to="/signin">
+          <button className="btn btn-sm btn-warning">Login</button>
+          </Link>}
+          
         </div>
        
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </Layout>
   );
 };
 

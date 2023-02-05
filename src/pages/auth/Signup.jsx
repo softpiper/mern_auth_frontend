@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
+import Layout from "../layouts/Layout";
+import { isAuth } from "./helpers";
 
 const Signup = () => {
   const [values, setValues] = useState({
@@ -36,8 +39,10 @@ const Signup = () => {
   }
   console.log(values);
   return (
-    <React.Fragment>
+    <Layout>
       <div className="container">
+      {isAuth() ? <Navigate to="/" replace /> : null}
+
         <ToastContainer />
         <div className="row" style={{'display':'flex', 'justifyContent': 'center'}}>
           <div className="col-md-4">
@@ -69,7 +74,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </Layout>
   );
 };
 

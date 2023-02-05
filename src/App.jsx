@@ -1,11 +1,11 @@
-import React from 'react'
-import AppRoutes from './AppRoutes';
-import Layout from './pages/layouts/Layout';
+import AppRoutes from "./AppRoutes";
 const App = () => {
   return (
-    <Layout>
-       <AppRoutes/>
-    </Layout>
-  )
-}
+    <>
+    
+      <AppRoutes />
+
+    </>
+  );
+};
 export default App;
