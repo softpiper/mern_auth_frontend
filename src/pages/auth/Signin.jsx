@@ -1,13 +1,11 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { initializeUseSelector } from "react-redux/es/hooks/useSelector";
-import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
-import { login, logout, logoutCall } from "../../redux/apiCalls";
+import { login } from "../../redux/apiCalls";
 import Layout from "../layouts/Layout";
-import { authenticate, isAuth } from "./helpers";
+import jwt from 'jwt-decode'
+
 
 const Signin = () => {
   const [values, setValues] = useState({
@@ -26,15 +24,41 @@ const Signin = () => {
       [e.target.name]: e.target.value}
       )
   }
-
-
-
+//
+//
+//Login Handler
   const submitHandler = (e)=>{
     e.preventDefault();
     setValues({...values, buttonText: "Submitting"})
     login(dispatch, {email, password});
   }
-  // console.log(values);
+
+//
+//
+// Google login
+
+  const handleCallbackResponse = (res)=>{
+    console.log(res.credential);
+    var userObject = jwt(res.credential);
+    console.log(userObject.email);
+  }
+
+  useEffect(()=>{
+    // eslint-disable-next-line no-undef
+    google.accounts.id.initialize({
+      client_id: "212016179859-0sklacduf5egaj2kd79tqk3k8gfho97m.apps.googleusercontent.com",
+      callback: handleCallbackResponse
+    })
+    // eslint-disable-next-line no-undef
+    google.accounts.id.renderButton(
+      document.getElementById("signDiv") ,
+      {theme: "outline", size: "large"}
+    )
+  },[])
+
+
+
+
   return (
     <Layout>
       <div className="container">
@@ -61,6 +85,10 @@ const Signin = () => {
           {error && <p>Somthing went wrong...</p> }
 
             </form>
+
+            <div id="signDiv"></div>
+
+            {/* <Google/> */}
           </div>
         </div>
       </div>
