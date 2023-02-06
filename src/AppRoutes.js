@@ -10,8 +10,8 @@ const AppRoutes = ({user}) => {
     <div>
         <Routes>
             <Route path='/' element={<Home/>}/>
-            <Route path='/signup' element={<Signup/>}/>
-            <Route path='/signin' element={!user? <Navigate to="/"/> :<Signin/>}/>
+            <Route path='/signup' element={user ?<Navigate to="/"/>: <Signup/>}/>
+            <Route path='/signin' element={user? <Navigate to="/"/> :<Signin/>}/>
             <Route path='/auth/activate/:token' element={<Activate/>}/>
 
         </Routes>

@@ -5,7 +5,7 @@ import { initializeUseSelector } from "react-redux/es/hooks/useSelector";
 import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
-import { login } from "../../redux/apiCalls";
+import { login, logout, logoutCall } from "../../redux/apiCalls";
 import Layout from "../layouts/Layout";
 import { authenticate, isAuth } from "./helpers";
 
@@ -28,30 +28,11 @@ const Signin = () => {
   }
 
 
+
   const submitHandler = (e)=>{
     e.preventDefault();
     setValues({...values, buttonText: "Submitting"})
     login(dispatch, {email, password});
-    toast.success(` Welcome Back!`);
-    
-
-    // axios.post(`${process.env.REACT_APP_API}/signin`,{ email, password})
-    // .then(function (response) {
-    //   console.log('success', response);
-    //   authenticate(response, ()=>{
-    //     setValues({...values, email: '', password: '', buttonText:'Submit'});
-    //     toast.success(`${response.data.user.name}, Welcome Back!`);
-    //   });
-
-    // })
-    // .catch(function (error) {
-    //   console.log('error', error.response.data);
-    //   setValues({...values, buttonText:'Submit'});
-
-    //     toast.error(error.response.data.error);
-    // });
-
-
   }
   // console.log(values);
   return (
@@ -83,6 +64,7 @@ const Signin = () => {
           </div>
         </div>
       </div>
+
     </Layout>
   );
 };
